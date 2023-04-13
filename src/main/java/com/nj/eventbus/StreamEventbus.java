@@ -49,7 +49,7 @@ public class StreamEventbus implements Bus<StreamEventbus> {
 
     @Override
     public StreamEventbus sequential() {
-        this.isParallel = true;
+        this.isParallel = false;
         return this;
     }
 
