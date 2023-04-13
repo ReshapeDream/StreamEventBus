@@ -1,6 +1,6 @@
 package com.nj.eventbus;
 
-public interface Bus<T extends Bus> {
+public interface Bus<T extends Bus<?>> {
     /**
      * 标记顺序执行
      * 

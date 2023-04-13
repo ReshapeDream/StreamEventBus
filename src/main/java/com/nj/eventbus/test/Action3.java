@@ -1,14 +1,13 @@
-package com.nj.eventbus.test.actions;
+package com.nj.eventbus.test;
 
 import java.time.LocalDateTime;
 
 import com.nj.eventbus.Subscribe;
-import com.nj.eventbus.test.TestUtil;
 
 public class Action3 {
     @Subscribe
     public void action3(Integer log) {
-        System.out.printf("[%s]-[%s] update log: %s\n",
+        System.out.printf("[%s]-[%s] action3: %s\n",
                 LocalDateTime.now(),
                 Thread.currentThread().getName(),
                 log);

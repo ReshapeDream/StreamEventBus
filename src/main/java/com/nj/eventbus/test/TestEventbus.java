@@ -1,13 +1,14 @@
 package com.nj.eventbus.test;
 
-import org.junit.jupiter.api.Test;
-
 import com.nj.eventbus.StreamEventbus;
 
 public class TestEventbus {
 
-    @Test
-    public void testParallel() {
+    public static void main(String[] args) {
+        testParallel();
+    }
+
+    public static void testParallel() {
         StreamEventbus.of("parallel")
                 // .sequential()
                 // .parallel()

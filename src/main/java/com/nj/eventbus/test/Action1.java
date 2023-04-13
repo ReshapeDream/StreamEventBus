@@ -1,9 +1,8 @@
-package com.nj.eventbus.test.actions;
+package com.nj.eventbus.test;
 
 import java.time.LocalDateTime;
 
 import com.nj.eventbus.Subscribe;
-import com.nj.eventbus.test.TestUtil;
 
 public class Action1 {
 
@@ -13,7 +12,6 @@ public class Action1 {
                 LocalDateTime.now(), Thread.currentThread().getName(),
                 src[0], src[1]);
         TestUtil.sleep();
-        // int k = 1 / 0;
     }
 
     @Subscribe
@@ -22,7 +20,6 @@ public class Action1 {
                 LocalDateTime.now(), Thread.currentThread().getName(),
                 ok);
         TestUtil.sleep();
-        // int k = 1 / 0;
     }
 
 }
