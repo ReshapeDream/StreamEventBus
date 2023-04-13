@@ -7,7 +7,7 @@ import com.nj.eventbus.StreamEventbus;
 public class TestEventbus {
 
     @Test
-    public void testParallel() {
+    void testParallel() {
         StreamEventbus.of("parallel")
                 // .sequential()
                 // .parallel()
