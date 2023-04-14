@@ -7,6 +7,7 @@ public class TestEventbus {
     public void testParallel() {
         StreamEventbus.of("parallel")
                 // .sequential()
+                // .parallel(10)
                 .ignoreException()
                 .post(Action0.class, "action0 with err")
                 .post(Action1.class, new String[] { "str0", "str1" })
