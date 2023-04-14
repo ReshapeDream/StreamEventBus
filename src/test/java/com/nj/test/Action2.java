@@ -1,4 +1,4 @@
-package com.nj.eventbus.test;
+package com.nj.test;
 
 import java.time.LocalDateTime;
 
