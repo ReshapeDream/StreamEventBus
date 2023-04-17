@@ -27,6 +27,10 @@ public class StreamEventbus implements Bus<StreamEventbus> {
      * 是否并行
      */
     private boolean isParallel = false;
+    /**
+     * 是否可并行 Parallelizable
+     */
+    private boolean isParallelizable = true;
 
     /**
      * 并行度
@@ -90,28 +94,32 @@ public class StreamEventbus implements Bus<StreamEventbus> {
      * @param preEventResultIndex 上次event结果的坐标
      * @return
      */
-    public StreamEventbus next(Class<?> topic,int preEventResultIndex){
-        if(events.size()<1)throw new RuntimeException("No pre event to use.");
-        Event event=new Event(topic, null);
+    public StreamEventbus next(Class<?> topic, int preEventResultIndex) {
+        if (events.size() < 1)
+            throw new RuntimeException("No pre event to use.");
+        Event event = new Event(topic, null);
         event.setPreResultIndex(preEventResultIndex);
         Event preEvent = events.getLast();
         event.setPre(preEvent);
         preEvent.setNext(event);
         events.addLast(event);
+        // 因为需要取到前一个event的结果。不可以并行
+        isParallelizable = false;
         return this;
     }
 
-    public StreamEventbus next(Class<?> topic){
-        return next(topic,0);
+    public StreamEventbus next(Class<?> topic) {
+        return next(topic, 0);
     }
 
     public void exec() {
         if (executor == null) {
-            executor = !isParallel ? Executors.newSingleThreadExecutor(new ExecutorThreadFactory(exceptionHandler))
-                    : Executors.newFixedThreadPool(Math.max(parallelism, Runtime.getRuntime().availableProcessors()),
-                            new ExecutorThreadFactory(exceptionHandler));
+            executor = isParallel && isParallelizable
+                    ? Executors.newFixedThreadPool(Math.max(parallelism, Runtime.getRuntime().availableProcessors()),
+                            new ExecutorThreadFactory(exceptionHandler))
+                    : Executors.newSingleThreadExecutor(new ExecutorThreadFactory(exceptionHandler));
         }
-        new EventExecutor().exec(executor, events, exceptionHandler, isParallel, ignoreException);
+        new EventExecutor().exec(executor, events, exceptionHandler, isParallel && isParallelizable, ignoreException);
         close();
     }
 
