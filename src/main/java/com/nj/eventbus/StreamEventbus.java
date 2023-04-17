@@ -148,7 +148,6 @@ public class StreamEventbus implements Bus<StreamEventbus> {
     private class ExecutorThreadFactory implements ThreadFactory {
 
         private final EventExceptionHandler exceptionHandler;
-        private final AtomicInteger seq = new AtomicInteger(0);
 
         public ExecutorThreadFactory(EventExceptionHandler exceptionHandler) {
             this.exceptionHandler = exceptionHandler;
@@ -156,7 +155,8 @@ public class StreamEventbus implements Bus<StreamEventbus> {
 
         @Override
         public Thread newThread(Runnable r) {
-            Thread t = new Thread(r, "event-pool-" + seq.getAndIncrement());
+            Thread t = new Thread(r);
+            t.setName("event-pool-" + t.hashCode());
             t.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
                 @Override
                 public void uncaughtException(Thread t, Throwable e) {
