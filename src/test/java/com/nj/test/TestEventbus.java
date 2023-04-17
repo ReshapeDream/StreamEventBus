@@ -14,6 +14,7 @@ public class TestEventbus {
     private static void testResult() {
         StreamEventbus.of("testResult")
                 // .ignoreException()
+                .parallel(10)
                 // 每个post的event，返回的结果可能是多个，根据next
                 .post(Action0.class, "string")
                 .next(Action0.class, 1)
