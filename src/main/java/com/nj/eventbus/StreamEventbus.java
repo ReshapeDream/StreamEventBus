@@ -85,6 +85,26 @@ public class StreamEventbus implements Bus<StreamEventbus> {
         return this;
     }
 
+    /**
+     * @param topic
+     * @param preEventResultIndex 上次event结果的坐标
+     * @return
+     */
+    public StreamEventbus next(Class<?> topic,int preEventResultIndex){
+        if(events.size()<1)throw new RuntimeException("No pre event to use.");
+        Event event=new Event(topic, null);
+        event.setPreResultIndex(preEventResultIndex);
+        Event preEvent = events.getLast();
+        event.setPre(preEvent);
+        preEvent.setNext(event);
+        events.addLast(event);
+        return this;
+    }
+
+    public StreamEventbus next(Class<?> topic){
+        return next(topic,0);
+    }
+
     public void exec() {
         if (executor == null) {
             executor = !isParallel ? Executors.newSingleThreadExecutor(new ExecutorThreadFactory(exceptionHandler))

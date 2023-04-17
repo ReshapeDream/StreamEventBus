@@ -7,7 +7,21 @@ public class TestEventbus {
     public static void main(String[] args) {
         // testSequential();
         // ignoreException();
-        stopWhenErr();
+        // stopWhenErr();
+        testResult();
+    }
+
+    private static void testResult() {
+        StreamEventbus.of("testResult")
+                // .ignoreException()
+                // 每个post的event，返回的结果可能是多个，根据next
+                .post(Action0.class, "string")
+                .next(Action0.class, 1)
+                .next(Action0.class)
+                .exception((c, info) -> {
+                    c.printStackTrace();
+                })
+                .exec();
     }
 
     public static void testParallel() {
@@ -44,8 +58,6 @@ public class TestEventbus {
                 .exec();
     }
 
-
-    
     public static void ignoreException() {
         StreamEventbus.of("parallel")
                 .sequential()
@@ -62,7 +74,7 @@ public class TestEventbus {
                 })
                 .exec();
     }
-    
+
     public static void stopWhenErr() {
         StreamEventbus.of("parallel")
                 .sequential()
